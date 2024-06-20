@@ -9,7 +9,7 @@ from rich.logging import RichHandler
 from ._version import __version__
 from .web import get_url, send_preview
 
-cli = BotCli("web2img-bot")
+cli = BotCli("instantview-bot")
 cli.add_generic_option("-v", "--version", action="version", version=__version__)
 cli.add_generic_option(
     "--no-time",
