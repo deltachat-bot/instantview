@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "instantview"
+description = "Delta Chat bot to take website screenshots"
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["deltachat", "bot"]
+authors = [
+  {name = "adbenitez", email = "adb@merlinux.eu"},
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+]
+dependencies = [
+    "deltabot-cli>=6.2.0,<7.0",
+    "beautifulsoup4>=4.12.3,<5.0",
+    "html5lib>=1.1,<2.0",
+    "requests>=2.32.3,<3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/deltachat-bot/instantview"
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "mypy",
+  "isort",
+  "pylint",
+  "pylama",
+  "pytest",
+  "types-requests",
+]
+
+[project.scripts]
+instantview-bot = "instantview:main"
+
+[tool.setuptools_scm]
+# can be empty if no extra settings are needed, presence enables setuptools_scm
+version_file = "instantview/_version.py"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+ignore_missing_imports = "True"
