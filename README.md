@@ -28,6 +28,12 @@ instantview-bot config displayname "Web Preview"
 instantview-bot config selfstatus "Hi, send me some URL to get a preview"
 ```
 
+Show its QR code so you can scan it to establish a secure chat and add it into groups:
+
+```sh
+instantview-bot qr
+```
+
 Finally you can start the bot with:
 
 ```sh
