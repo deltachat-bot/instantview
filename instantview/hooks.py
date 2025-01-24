@@ -72,8 +72,6 @@ def on_msg(bot: Bot, accid: int, event: NewMsgEvent) -> None:
             send_preview(bot, accid, msg, url)
         except Exception as ex:
             bot.logger.exception(ex)
-            reply = MsgData(text=f"Error: {ex}", quoted_message_id=msg.id)
-            bot.rpc.send_msg(accid, msg.chat_id, reply)
 
 
 @cli.on(events.NewMessage(command="/help"))
