@@ -11,6 +11,8 @@ import bs4
 import requests
 from deltachat2 import Bot, Message, MsgData
 
+from .gusmobile import fetch
+
 session = requests.Session()
 session.headers.update(
     {
@@ -22,7 +24,7 @@ session.headers.update(
 )
 session.request = functools.partial(session.request, timeout=15)  # type: ignore
 url_regex = re.compile(
-    r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+    r"(gemini|http[s]?)://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 )
 MAX_SIZE = 1024**2 * 15
 
@@ -37,6 +39,15 @@ def get_url(text: str) -> str:
 
 def send_preview(bot: Bot, accid: int, msg: Message, url: str) -> None:
     """Fetch URL and send a preview reply if file is not too big"""
+    reply = MsgData(quoted_message_id=msg.id)
+
+    if url.startswith("gemini:"):
+        gem = fetch(url)
+        if gem.content_type.startswith("text/"):
+            reply.html = gem.content.replace("\n", "<br/>")
+            bot.rpc.send_msg(accid, msg.chat_id, reply)
+        return
+
     with session.get(url, stream=True) as resp:
         resp.raise_for_status()
         url = resp.url
@@ -53,7 +64,6 @@ def send_preview(bot: Bot, accid: int, msg: Message, url: str) -> None:
                 content += chunk
         else:
             size = content_size
-    reply = MsgData(quoted_message_id=msg.id)
     if size > MAX_SIZE:
         typ = content_type.split(";")[0] or "-"
         reply.text = f"Type: {typ}\nSize: >{_sizeof_fmt(MAX_SIZE)}"
