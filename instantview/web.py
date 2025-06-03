@@ -119,9 +119,13 @@ def gemtext2html(gemtext: str) -> str:
     html = "<html>"
     header_regex = re.compile(r"(#+)(.+)")
     link_regex = re.compile(r"=>\s*(\S+)(\s.+)?")
+    code_block = False
     for index, line in enumerate(gemtext.split("\n")):
+        if line == "```":
+            code_block = not code_block
+
         header = header_regex.match(line)
-        if header:
+        if not code_block and header:
             level = len(header.group(1))
             text = encode_html(header.group(2).strip())
             if index == 0:
@@ -133,7 +137,7 @@ def gemtext2html(gemtext: str) -> str:
             html += "<body>"
 
         link = link_regex.match(line)
-        if link:
+        if not code_block and link:
             url = encode_html(link.group(1).strip())
             text = encode_html((link.group(2) or "").strip()) or url
             html += f'<a href="{url}">{text}</a><br/>'
