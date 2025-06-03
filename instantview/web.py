@@ -44,7 +44,9 @@ def send_preview(bot: Bot, accid: int, msg: Message, url: str) -> None:
     if url.startswith("gemini:"):
         gem = fetch(url)
         if gem.content_type.startswith("text/"):
-            reply.html = gem.content.replace("\n", "<br/>")
+            html = gemtext2html(gem.content)
+            addr = bot.rpc.get_config(accid, "configured_addr")
+            reply.text, reply.html = prepare_html(addr, url, html)
             bot.rpc.send_msg(accid, msg.chat_id, reply)
         return
 
@@ -105,8 +107,45 @@ def _sizeof_fmt(num: float) -> str:
     return "%.1f%s%s" % (num, "Yi", suffix)  # noqa
 
 
+def encode_html(text: str) -> str:
+    text = text.replace("&", "&amp;")
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
+    text = text.replace("'", "&#39;")
+    return text
+
+
+def gemtext2html(gemtext: str) -> str:
+    html = "<html>"
+    header_regex = re.compile(r"(#+)(.+)")
+    link_regex = re.compile(r"=>\s*(\S+)(\s.+)?")
+    for index, line in enumerate(gemtext.split("\n")):
+        header = header_regex.match(line)
+        if header:
+            level = len(header.group(1))
+            text = encode_html(header.group(2).strip())
+            if index == 0:
+                html += f"<head><title>{text}</title></head><body>"
+            html += f"<h{level}>{text}</h{level}>"
+            continue
+
+        if index == 0:
+            html += "<body>"
+
+        link = link_regex.match(line)
+        if link:
+            url = encode_html(link.group(1).strip())
+            text = encode_html((link.group(2) or "").strip()) or url
+            html += f'<a href="{url}">{text}</a><br/>'
+            continue
+
+        html += f"{encode_html(line)}<br/>"
+
+    return html + "</body></html>"
+
+
 def prepare_html(
-    bot_addr: str, url: str, content: bytes, link_prefix: str = ""
+    bot_addr: str, url: str, content: bytes | str, link_prefix: str = ""
 ) -> tuple:
     """Sanitize HTML.
 
