@@ -24,7 +24,7 @@ session.headers.update(
 )
 session.request = functools.partial(session.request, timeout=15)  # type: ignore
 url_regex = re.compile(
-    r"(gemini|http[s]?)://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+    r"(gemini|http[s]?)://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),~]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 )
 MAX_SIZE = 1024**2 * 15
 
