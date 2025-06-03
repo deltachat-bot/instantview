@@ -7,7 +7,7 @@ name = "instantview"
 description = "Delta Chat bot to take website screenshots"
 dynamic = ["version"]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 keywords = ["deltachat", "bot"]
 authors = [
   {name = "adbenitez", email = "adb@merlinux.eu"},
