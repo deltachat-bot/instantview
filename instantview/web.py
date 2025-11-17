@@ -17,15 +17,18 @@ session = requests.Session()
 session.headers.update(
     {
         "User-Agent": (
-            "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:104.0)"
-            " Gecko/20100101 Firefox/104.0"
-        )
+            "Mozilla/5.0 (X11; Linux x86_64; rv:144.0) Gecko/20100101 Firefox/144.0"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
     }
 )
 session.request = functools.partial(session.request, timeout=15)  # type: ignore
 url_regex = re.compile(
     r"(gemini|http[s]?)://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),~]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
 )
+hostname_regex = re.compile(r"^(?:https?://)?([^/?#]+)")
 MAX_SIZE = 1024**2 * 15
 
 
@@ -50,7 +53,10 @@ def send_preview(bot: Bot, accid: int, msg: Message, url: str) -> None:
             bot.rpc.send_msg(accid, msg.chat_id, reply)
         return
 
-    with session.get(url, stream=True) as resp:
+    headers = {}
+    if match := hostname_regex.match(url):
+        headers["Host"] = match.group(1)
+    with session.get(url, headers=headers, stream=True) as resp:
         resp.raise_for_status()
         url = resp.url
         content_type = resp.headers.get("content-type", "").lower()

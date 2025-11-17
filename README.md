@@ -1,4 +1,4 @@
-# Instant View - Delta Chat Bot
+# InstantView Bot
 
 [![Latest Release](https://img.shields.io/pypi/v/instantview.svg)](https://pypi.org/project/instantview)
 [![CI](https://github.com/deltachat-bot/instantview/actions/workflows/python-ci.yml/badge.svg)](https://github.com/deltachat-bot/instantview/actions/workflows/python-ci.yml)
@@ -17,7 +17,7 @@ pip install instantview
 To configure the bot:
 
 ```sh
-instantview-bot init bot@example.org SuperHardPassword
+instantview-bot init DCACCOUNT:https://nine.testrun.org/new
 ```
 
 **(Optional)** To customize the bot name, avatar and status/signature:
@@ -26,6 +26,12 @@ instantview-bot init bot@example.org SuperHardPassword
 instantview-bot config selfavatar "/path/to/avatar.png"
 instantview-bot config displayname "Web Preview"
 instantview-bot config selfstatus "Hi, send me some URL to get a preview"
+```
+
+To get in contact with the bot, get the bot's invite link:
+
+```sh
+instantview-bot link
 ```
 
 Finally you can start the bot with:
