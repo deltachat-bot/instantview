@@ -18,7 +18,7 @@ cli.add_generic_option(
 )
 HELP = (
     "I am a Delta Chat bot, send me any website URL to get a minimal preview."
-    " Example: https://delta.chat"
+    " Example: https://arcanechat.me"
 )
 
 
