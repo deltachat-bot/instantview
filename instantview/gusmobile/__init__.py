@@ -1,2 +1,1 @@
-from .client import Response
-from .client import fetch
+from .client import Response, fetch  # noqa

@@ -17,7 +17,7 @@ pip install instantview
 To configure the bot:
 
 ```sh
-instantview-bot init DCACCOUNT:https://nine.testrun.org/new
+instantview-bot init dcaccount:nine.testrun.org
 ```
 
 **(Optional)** To customize the bot name, avatar and status/signature:

@@ -16,20 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import codecs
-import collections
-import fnmatch
-import io
-import mimetypes
-import os.path
-import random
-import shlex
-import shutil
 import socket
 import ssl
-import subprocess
 import sys
-import tempfile
-import time
 import urllib.parse
 from email.message import EmailMessage
 
