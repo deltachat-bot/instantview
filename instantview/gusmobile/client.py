@@ -96,8 +96,7 @@ def fetch(raw_url):
             return
         elif isinstance(err, (TimeoutError, socket.timeout)):
             print(
-                """ERROR: Connection timed out!
-                Slow internet connection?  Use 'set timeout' to be more patient."""
+                "ERROR: Connection timed out!\nSlow internet connection?  Use 'set timeout' to be more patient."
             )
             return
         else:
